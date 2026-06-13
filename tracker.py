@@ -8,8 +8,12 @@ ethereum_price = data["ethereum"]["eur"]
 bitcoin_price = data["bitcoin"]["eur"]
 previous_prices = {"bitcoin": bitcoin_price, "ethereum": ethereum_price}
 
-with open("previous_prices.json", "w") as file:
-    json.dump(previous_prices, file)
+try:
+    with open("previous_prices.json", "r") as file:
+        previous_prices = json.load(file)
+except FileNotFoundError:
+    previous_prices = None
 
+print(previous_prices)
 print(f"Current Bitcoin price in EUR: {bitcoin_price}")
 print(f"Current Ethereum price in EUR: {ethereum_price}")
