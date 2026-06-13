@@ -15,6 +15,9 @@ except FileNotFoundError:
 
 if previous_prices is not None:
     bitcoin_change = (bitcoin_price - previous_prices["bitcoin"]) / previous_prices["bitcoin"] * 100
+    ethereum_change = (ethereum_price - previous_prices["ethereum"]) / previous_prices["ethereum"] * 100
+    if abs(ethereum_change) > 10:
+        print(f"Ethereum price changed by {ethereum_change:.2f}% since the last check.")
     if abs(bitcoin_change) > 10:
         print(f"Bitcoin price changed by {bitcoin_change:.2f}% since the last check.")
 
