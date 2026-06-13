@@ -1,6 +1,18 @@
+import os
+import asyncio
+from telegram import Bot
+from dotenv import load_dotenv
 import requests
 import json
 
+load_dotenv()
+
+async def send_telegram(message):
+    bot = Bot(token=TELEGRAM_TOKEN)
+    await bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
+
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 response = requests.get('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=eur')
 data = response.json()
@@ -21,9 +33,8 @@ if previous_prices is not None:
     if abs(bitcoin_change) > 10:
         print(f"Bitcoin price changed by {bitcoin_change:.2f}% since the last check.")
 
-print(previous_prices)
-print(f"Current Bitcoin price in EUR: {bitcoin_price}")
-print(f"Current Ethereum price in EUR: {ethereum_price}")
+asyncio.run(send_telegram(f"Bitcoin price changed by {bitcoin_change:.2f}%!"))
+asyncio.run(send_telegram(f"Ethereum price changed by {ethereum_change:.2f}%!"))
 
 current_prices = {"bitcoin": bitcoin_price, "ethereum": ethereum_price}
 with open("previous_prices.json", "w") as file:
