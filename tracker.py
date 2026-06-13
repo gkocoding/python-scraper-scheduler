@@ -24,3 +24,7 @@ if previous_prices is not None:
 print(previous_prices)
 print(f"Current Bitcoin price in EUR: {bitcoin_price}")
 print(f"Current Ethereum price in EUR: {ethereum_price}")
+
+current_prices = {"bitcoin": bitcoin_price, "ethereum": ethereum_price}
+with open("previous_prices.json", "w") as file:
+    json.dump(current_prices, file)
